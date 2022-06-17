@@ -3,7 +3,7 @@
 namespace App\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Stringable;
+use Illuminate\Support\Str;
 
 class BaseFilter
 {
@@ -119,15 +119,15 @@ class BaseFilter
         if(is_array($this->requestValue())) {
             $query = $query->whereIn($this->field(), $this->requestValue());
         } else {
-            $query = $query->whereIn($this->field(),'=', $this->requestValue());
+            $query = $query->where($this->field(),'=', $this->requestValue());
         }
 
         return $query;
     }
 
-    public function requestValue($param)
+    public function requestValue()
     {
-        $pathDot = (string) str('filters')->append("{$this->field()}");
+        $pathDot = (string) Str::of('')->append("{$this->field()}");
 
         return request($pathDot);
     }
